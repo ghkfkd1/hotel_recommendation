@@ -30,6 +30,11 @@ time.sleep(0.5)
 seoul_url = driver.find_element('xpath', '/html/body/div[3]/div/div/div/div/main/section/div/ul[2]/li/a').get_attribute('href')
 driver.get(seoul_url)
 time.sleep(0.5)
+# button_busan_xpath = 'html/body/div[3]/div/div/div/div/main/section/div/ul[1]/li[2]'
+# button_busan = driver.find_element(By.XPATH, button_busan_xpath)
+# driver.execute_script('arguments[0].click();', button_busan)
+# time.sleep(0.5)
+
 button_popular_xpath = '//*[@id="__next"]/div[2]/section[1]/button'
 button_popular = driver.find_element(By.XPATH, button_popular_xpath)
 driver.execute_script('arguments[0].click();', button_popular)
