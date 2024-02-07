@@ -33,6 +33,7 @@ class Exam(QWidget, form_window):
             self.cmb_region.addItem(region)
 
         self.hotel_flag = 0
+        self.rec_flag = 1
         model = QStringListModel()
         model.setStringList(self.names)
         completer = QCompleter()
@@ -74,21 +75,23 @@ class Exam(QWidget, form_window):
     def btn_slot(self):
         self.cmb_region.setCurrentIndex(0)
         self.cmb_hotel.setCurrentIndex(0)
-        try:
-            key_word = self.le_search.text()
-            if key_word in self.names:
-                recommendation = self.recommendation_by_name(key_word)
-                words = self.relate_keyword(key_word)
-                point = '\n'.join(list(words))
-                self.lbl_keyword.setText(point)
-            else:
-                recommendation = self.recommendation_by_keyword(key_word)
-            if recommendation:
-                self.lbl_hotel.setText(recommendation)
+        key_word = self.le_search.text()
+        if key_word in self.names:
+            self.rec_flag = 0
+            recommendation = self.recommendation_by_name(key_word)
+            words = self.relate_keyword(key_word)
+            keykey = '\n'.join(list(words))
+            self.lbl_keyword.setText(keykey)
+        else:
+            recommendation = self.recommendation_by_keyword(key_word)
+        if recommendation:
+            self.lbl_hotel.setText(recommendation)
+            if self.rec_flag:
                 point = '\n'.join(list(self.words))
                 self.lbl_keyword.setText(point)
-        except:
-            print('error')
+            else:
+                self.rec_flag = 1
+
 
     def recommendation_by_name(self, name):
         hotel_idx = self.df_reviews[self.df_reviews['names'] == name].index[0]
@@ -137,7 +140,7 @@ class Exam(QWidget, form_window):
         simScore = sorted(simScore, key=lambda x: x[1])
         simScore = simScore[:11]
         hotelIdx = [i[0] for i in simScore]
-        rechotelList = self.df_reviews.iloc[hotelIdx, 0]
+        rechotelList = list(self.df_reviews.iloc[hotelIdx, 0] + ' (' + self.df_reviews.iloc[hotelIdx, 2] + ')')
         return rechotelList[1:11]
 
 
