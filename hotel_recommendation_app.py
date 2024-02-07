@@ -72,6 +72,8 @@ class Exam(QWidget, form_window):
             pass
 
     def btn_slot(self):
+        self.cmb_region.setCurrentIndex(0)
+        self.cmb_hotel.setCurrentIndex(0)
         try:
             key_word = self.le_search.text()
             if key_word in self.names:
@@ -108,9 +110,11 @@ class Exam(QWidget, form_window):
             sim_world = self.embedding_model.wv.most_similar(key_word, topn=10)
         except:
             if key_word:
-                self.lbl_hotel.setText('존재하지 않는 키워드입니다.')
+                self.lbl_hotel.setText('존재하지 않는 호텔입니다.')
+                self.lbl_keyword.setText('존재하지 않는 키워드입니다.')
             else:
-                self.lbl_hotel.setText('호텔이나 키워드를 입력해주세요.')
+                self.lbl_hotel.setText('호텔을 입력해주세요.')
+                self.lbl_keyword.setText('키워드를 입력해주세요.')
             return
         self.words = [key_word]
         for word, _ in sim_world:
